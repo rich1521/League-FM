@@ -11,4 +11,3 @@ Dit kan soms voorkomen dat wij dit updaten of nieuwe features toevoegen.
 ```bash
 ensure [League-FM]
 ```
-Radio LEagueFM is de map naam, mocht je dus een andere map naam hebben plaats die dan daar.

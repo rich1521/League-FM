@@ -7,7 +7,9 @@ version '0.0.1'
 ui_page 'player/index.html'
 
 files {
-    'player/index.html'
+    'player/index.html',
+    'player/style.css',
+    'player/player.js'
 }
 
 client_script 'client.lua'

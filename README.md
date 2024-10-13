@@ -11,3 +11,5 @@ Dit kan soms voorkomen dat wij dit updaten of nieuwe features toevoegen.
 ```bash
 ensure [League-FM]
 ```
+
+## Hoe gebruik je het vervolgens in game?

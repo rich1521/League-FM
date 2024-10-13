@@ -22,7 +22,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     border: 1px solid #2953A5;
-    display: none;
+    display: flex;
     align-items: center;
     padding: 15px;
     gap: 20px; /* Zorgt voor ruimte tussen album art en de rest van de informatie */
@@ -64,7 +64,7 @@ body {
 
 .music-info p {
     position: absolute;
-    bottom: 140px;
+    top: calc(60px + 26px + 20px);
     font-size: 14px;
     font-weight: normal;
     color: #2953A5;

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeagueFM Speler</title>
+    <style>
+        @font-face {
+            font-family: 'IntroRustBase';
+            src: url('https://academy.league-fm.nl/fonts/IntroRust-Base.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'IntroRustBase', sans-serif; /* Fallback to sans-serif */
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .music-player-container {
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            width: 500px;
+            height: 200px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid #2953A5;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            gap: 20px; /* Zorgt voor ruimte tussen album art en de rest van de informatie */
+        }
+
+        .lfm-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px; /* Pas de grootte van het logo aan indien nodig */
+            height: auto;
+        }
+
+        .album-art {
+            width: 170px;
+            height: 180px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .music-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 5px;
+            align-items: flex-start; /* Zorgt ervoor dat de inhoud aan de linkerkant uitgelijnd wordt */
+            flex: 1;
+        }
+
+        .music-info h1 {
+            position: absolute;
+            top: 50px;
+            font-size: 26px;
+            font-family: 'IntroRustBase', sans-serif; /* Fallback to sans-serif */
+            font-weight: bold;
+            color: #2953A5;
+            margin: 0;
+        }
+
+        .music-info p {
+            font-size: 14px;
+            color: #2953A5;
+            margin: 5px 0 0 0;
+            margin-top: 25px;
+        }
+
+        .play-button {
+            width: 50px;
+            height: 50px;
+            background-color: #2953A5;
+            border: none;
+            border-radius: 100%;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+            font-size: 22px;
+            cursor: pointer;
+            color: #fff;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px; /* Zorgt voor ruimte tussen artiestinformatie en de play-knop */
+        }
+
+        .volume-slider {
+            position: absolute;
+            bottom: 20px;
+            -webkit-appearance: none; /* Verwijder standaard slider stijl voor WebKit browsers */
+            appearance: none;
+            width: 50%;
+            height: 8px;
+            background: linear-gradient(to right, #2953A5 50%, #ddd 50%); /* Standaard 50% gevuld */
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s; /* Voor een soepele overgang als de slider beweegt */
+        }
+
+        .volume-slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            background: transparent;
+            border-radius: 5px;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2953A5;
+            border: 1px solid white; /* Wit randje om het balletje */
+            cursor: pointer;
+            margin-top: -5px; /* Zorgt ervoor dat het balletje gecentreerd is op de slider */
+        }
+
+        .volume-slider::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            background: transparent;
+            border-radius: 5px;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2953A5;
+            border: 1px solid white;
+            cursor: pointer;
+        }
+
+        .volume-slider::-ms-track {
+            width: 100%;
+            height: 8px;
+            background: transparent;
+            border-color: transparent;
+            color: transparent;
+        }
+
+        .volume-slider::-ms-fill-lower {
+            background: #2953A5;
+            border-radius: 5px;
+        }
+
+        .volume-slider::-ms-fill-upper {
+            background: #ddd;
+            border-radius: 5px;
+        }
+
+        .volume-slider::-ms-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2953A5;
+            border: 1px solid white;
+            cursor: pointer;
+        }
+
+        /* JavaScript zal deze functie gebruiken om de slider dynamisch te stylen */
+
+
+        .close-button {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            background-color: #2953A5;
+            color: white;
+            border: none;
+            border-radius: 30% 0 10% 0;
+            width: 40px;
+            height: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="music-player-container" id="musicPlayer">
+        <img src="https://academy.league-fm.nl/images/logolfm.png" alt="LFM Logo" class="lfm-logo">
+        <img src="https://via.placeholder.com/80" alt="Album Art" class="album-art" id="albumArt">
+        
+        <div class="music-info">
+            <h1 id="songTitle">Laden...</h1>
+            <p id="artistName">Laden...</p>
+            <button class="play-button" id="playButton" onclick="togglePlay()">&#9654;</button>
+            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="50" onchange="changeVolume(this.value)">
+        </div>
+
+        <button class="close-button" onclick="closeUI()">X</button>
+    </div>
+
+    <audio id="audioPlayer" src="https://radiopaneel.league-fm.nl/listen/leaguefm/stream"></audio>
+
+    <script>
+        const nowPlayingUrl = "https://radiopaneel.league-fm.nl/api/nowplaying/leaguefm";
+        const audio = document.getElementById('audioPlayer');
+        const playButton = document.getElementById('playButton');
+        let isPlaying = false;
+
+        async function fetchSongInfo() {
+            try {
+                const response = await fetch(nowPlayingUrl);
+                const data = await response.json();
+                const song = data.now_playing.song.title;
+                const artist = data.now_playing.song.artist;
+                const albumArt = data.now_playing.song.art 
+                    ? data.now_playing.song.art 
+                    : "https://via.placeholder.com/80";
+
+                document.getElementById('songTitle').innerText = song;
+                document.getElementById('artistName').innerText = artist;
+                document.getElementById('albumArt').src = albumArt;
+            } catch (error) {
+                console.error("Error fetching song info:", error);
+                document.getElementById('songTitle').innerText = "Fout bij laden";
+                document.getElementById('artistName').innerText = "Onbekende artiest";
+                document.getElementById('albumArt').src = "https://academy.league-fm.nl/images/logolfm.png";
+            }
+        }
+
+        // Ververs de songinformatie elke 30 seconden
+        fetchSongInfo();
+        setInterval(fetchSongInfo, 30000);
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playButton.innerHTML = '&#9654;'; 
+            } else {
+                audio.src = "https://radiopaneel.league-fm.nl/listen/leaguefm/stream"; // Reset de stream link
+                audio.play();
+                playButton.innerHTML = '&#10074;&#10074;'; 
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function changeVolume(volume) {
+            audio.volume = volume / 100;
+        }
+
+        function closeUI() {
+            document.getElementById('musicPlayer').style.display = 'none';
+            fetch(`https://${GetParentResourceName()}/close`, {
+                method: 'POST'
+            });
+        }
+
+        // Luister naar berichten vanuit de client om de UI te openen
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'ui') {
+                if (event.data.display === true) {
+                    document.getElementById('musicPlayer').style.display = 'flex'; // Toont de UI
+                } else {
+                    document.getElementById('musicPlayer').style.display = 'none'; // Verbergt de UI
+                }
+            }
+        });
+
+        const volumeSlider = document.getElementById('volumeSlider');
+
+        volumeSlider.addEventListener('input', function() {
+            const value = (this.value - this.min) / (this.max - this.min) * 100; 
+            this.style.background = `linear-gradient(to right, #2953A5 ${value}%, #ddd ${value}%)`;
+        });
+    </script>
+</body>
+</html>

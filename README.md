@@ -13,3 +13,12 @@ ensure [League-FM]
 ```
 
 ## Hoe gebruik je het vervolgens in game?
+Het gebruik van de player is eigenlijk vrij simpel, bij opstarten van je game blijft de player uit en ontzichtbaar.
+Maar wanneer je de player aanroept wordt deze zichtbaar en kan je deze bedienen, tijdens het bedienen kan je niks anders in game.
+Want in het echt als je een ding doet is het ook erg lastig om een 2e activiteit tussendoor te kunnen doen!
+
+### Je roept de player als volgt op;
+```bash
+/lfm
+```
+Wanneer je dat hebt gedaan komt direct rechts onder de player in beeld, na bedienen kan je die met het kruisje terug sluiten.

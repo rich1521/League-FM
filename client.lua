@@ -23,3 +23,12 @@ RegisterNUICallback('close', function(data, cb)
 
     cb('ok')
 end)
+
+RegisterCommand("lfm", function()
+    -- Hier komt de code om je UI te openen of sluiten
+    SetNuiFocus(true, true) -- Voorbeeld: Activeer de NUI
+    SendNUIMessage({ action = "open" }) -- Voorbeeld: Stuur een NUI bericht om de UI te openen
+end, false)
+
+-- Optioneel: Voeg een beschrijving toe aan het commando
+TriggerEvent('chat:addSuggestion', '/lfm', 'Open de League-FM speler.')

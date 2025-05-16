@@ -20,7 +20,7 @@ const nowPlayingUrl = "https://radiopaneel.league-fm.nl/api/nowplaying/leaguefm"
                 console.error("Error fetching song info:", error);
                 document.getElementById('songTitle').innerText = "Fout bij laden";
                 document.getElementById('artistName').innerText = "Onbekende artiest";
-                document.getElementById('albumArt').src = "https://academy.league-fm.nl/images/logolfm.png";
+                document.getElementById('albumArt').src = "https://nodesforyou.nl/media/21xq4fYd.png";
             }
         }
 
